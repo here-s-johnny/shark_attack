@@ -11,14 +11,14 @@ public class SharkLordGame extends ApplicationAdapter {
 	Texture img;
 	
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("shark_placeholder.png");
 	}
 
 	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+	public void render() {
+		Gdx.gl.glClearColor(0, 0, 1, (float) 0.5);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0);
