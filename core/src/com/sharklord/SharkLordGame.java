@@ -4,10 +4,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
+
+
 
 public class SharkLordGame extends ApplicationAdapter implements InputProcessor {
 	private static final int        FRAME_COLS = 5;         // #1
@@ -18,12 +22,17 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	TextureRegion[]                 boomFrames;             // #5
 	SpriteBatch                     spriteBatch;            // #6
 	TextureRegion                   currentFrame;           // #7
-
+	OrthographicCamera				camera;
 	float stateTime;                                        // #8
 	boolean explosionHappening = false;
 
+	int touchCoordinateX, touchCoordinateY;
+	Vector3 touchPoint;
+
 	@Override
 	public void create() {
+		Gdx.input.setInputProcessor(this);
+		touchPoint = new Vector3(touchCoordinateX, touchCoordinateY, 0);
 		boomSheet = new Texture(Gdx.files.internal("explosion.png")); // #9
 		TextureRegion[][] tmp = TextureRegion.split(boomSheet, boomSheet.getWidth()/FRAME_COLS, boomSheet.getHeight()/FRAME_ROWS);              // #10
 		boomFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -34,32 +43,38 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 			}
 		}
 		boomAnimation = new Animation(0.025f, boomFrames);      // #11
-		spriteBatch = new SpriteBatch();                // #12
+		spriteBatch = new SpriteBatch();
 		stateTime = 0f;                         // #13
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
+		camera.update();
 	}
 
 	@Override
 	public void render() {
+		spriteBatch.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);                        // #14
 		stateTime += Gdx.graphics.getDeltaTime();           // #15
-		currentFrame = boomAnimation.getKeyFrame(stateTime, true);  // #16
-		spriteBatch.begin();
-		spriteBatch.draw(currentFrame, 100, 100);             // #17
+		if (explosionHappening && !boomAnimation.isAnimationFinished(stateTime)) {
+			currentFrame = boomAnimation.getKeyFrame(stateTime, false);  // #16
+			camera.unproject(touchPoint.set(touchCoordinateX, touchCoordinateY, 0));
+			spriteBatch.draw(currentFrame, touchPoint.x, touchPoint.y);             // #17
+		}
 		spriteBatch.end();
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		spriteBatch.dispose();
 	}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		//touchCoordinateX = screenX;
-		//touchCoordinateY = screenY;
-		//stateTime = 0;
-		//explosionHappening = true;
-		return false;
+		touchCoordinateX = screenX;
+		touchCoordinateY = screenY;
+		stateTime = 0f;
+		explosionHappening = true;
+		return true;
 	}
 	@Override
 	public boolean keyDown(int keycode) {
