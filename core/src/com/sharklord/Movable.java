@@ -58,4 +58,11 @@ public class Movable {
     public void setAy(float ay) {
         this.ay = ay;
     }
+
+    public void update(float dt) {
+        x += dt * vx;
+        vy += dt * ax;
+        y += dt * vy;
+        vy += dt * ay;
+    }
 }
