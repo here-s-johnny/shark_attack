@@ -6,6 +6,7 @@ import javax.swing.text.Position;
 
 /**
  * Created by filip on 06.07.16.
+ * Holds data about the game
  */
 public class GameEnv {
     private static GameEnv ourInstance = new GameEnv();
@@ -24,7 +25,6 @@ public class GameEnv {
     public float getSharkHeight() {
         return screenHeight * .2f;
     }
-
     public float getSharkWidth() {
         return screenHeight * .2f;
     }
@@ -51,4 +51,7 @@ public class GameEnv {
     public float getSharkInitAy() {
         return .0f;
     }
+
+    public float getScreenMiddleY() { return screenHeight * .5f; }
+    public float getScreenMiddleX() { return screenWidth * .5f; }
 }
