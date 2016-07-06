@@ -11,6 +11,9 @@ public class Movable {
     protected float ax;       /// Acceleration
     protected float ay;
 
+    protected float width;
+    protected float height;
+
     public float getX() {
         return x;
     }
@@ -35,6 +38,14 @@ public class Movable {
         return ay;
     }
 
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
     public void setX(float x) {
         this.x = x;
     }
@@ -55,8 +66,17 @@ public class Movable {
         this.ax = ax;
     }
 
-    public void setAy(float ay) {
+    public void setAy(float ay)
+    {
         this.ay = ay;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 
     public void update(float dt) {

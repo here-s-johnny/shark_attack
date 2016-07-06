@@ -2,61 +2,35 @@ package com.sharklord;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by johnny on 06.07.16.
  */
-public class Cloud {
-    private Rectangle body;
-    private float x;
-    private float y;
-    private float v;
+public class Cloud extends Movable{
     private Texture texture;
 
-    public Cloud(float x, float y, float v) {
-        body = new Rectangle();
-        this.body.x = x;
-        this.body.y = y;
-        this.v = v;
+    public Cloud() {
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+        this.x = screenWidth- 200;
+        this.y = screenHeight- 200;
+        this.vx = -300.0f;
+        this.width = screenWidth * .1f;
+        this.height = screenHeight * 0.1f;
+
         this.texture = new Texture(Gdx.files.internal("cloud_placeholder.png"));
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public void setV(float v) {
-        this.v = v;
-    }
-
-    public float getX() {
-        return this.x;
-    }
-
-    public float getY() {
-        return this.y;
-    }
-
-    public float getV() {
-        return this.v;
+    // constructor to place a cloud at specific place (very likely to be redundant)
+    public Cloud(float x, float y, float vx, float vy) {
+        this.vx = vx;
+        this.vy = vy;
+        this.texture = new Texture(Gdx.files.internal("cloud_placeholder.png"));
     }
 
     public Texture getTexture() {
         return this.texture;
-    }
-
-    public Rectangle getBody() {
-        return this.body;
-    }
-
-
-    public void update(float dt) {
-        x -= dt * v;
     }
 
 }

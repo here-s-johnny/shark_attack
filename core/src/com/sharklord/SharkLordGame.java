@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,7 +16,6 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	Shark				shark;
 	Sound				sharkHopSound;
 
-	private OrthographicCamera camera;
 	private Cloud cloud;
 
 
@@ -27,10 +27,8 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		sharkImage = new Texture(Gdx.files.internal("shark_placeholder.png"));
 		sharkHopSound = Gdx.audio.newSound(Gdx.files.internal("explosion sound effect.mp3"));
 
-		cloud = new Cloud(10,10,10);
+		cloud = new Cloud();
 
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
 
 	}
 
@@ -40,11 +38,11 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		batch.begin();
 		float dt = Gdx.graphics.getDeltaTime();
 		shark.update(dt);
+		cloud.update(dt);
 		batch.draw(sharkImage, shark.getX(), shark.getY(), shark.width(), shark.height());
 
-		batch.setProjectionMatrix(camera.combined);
 
-		batch.draw(cloud.getTexture(), cloud.getX(), cloud.getY());
+		batch.draw(cloud.getTexture(), cloud.getX(), cloud.getY(), cloud.getWidth(), cloud.getHeight());
 		batch.end();
 	}
 
