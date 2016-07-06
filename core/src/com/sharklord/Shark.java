@@ -45,8 +45,7 @@ public class Shark extends Movable {
     }
 
     public void update(float dt) {
-        y += dt * vy;
-        vy += dt * ay;
+        super.update(dt);
         if (y < gameEnv.getSharkInitY()) {
             y = gameEnv.getSharkInitY();
             vy = .0f;
