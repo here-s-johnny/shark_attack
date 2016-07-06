@@ -16,18 +16,40 @@ import com.badlogic.gdx.math.Vector3;
 
 public class SharkLordGame extends ApplicationAdapter implements InputProcessor {
 
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
+	private Cloud cloud;
+
+
 	@Override
 	public void create() {
 		Gdx.input.setInputProcessor(this);
+		cloud = new Cloud(10,10,10);
+
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
+		batch = new SpriteBatch();
+
 	}
 
 	@Override
 	public void render() {
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+
+		batch.begin();
+		batch.draw(cloud.getTexture(), cloud.getX(), cloud.getY());
+		batch.end();
+
 	}
 
 	@Override
 	public void dispose() {
 		// This code will dispose of yo momma
+		batch.dispose();
 	}
 
 	@Override
