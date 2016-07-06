@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SharkLordGame extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch			batch;
 	Texture				backgroundImage;
@@ -21,27 +24,28 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	GameEnv				gameEnv;
 	OrthographicCamera	camera;
 	Vector3				touchPoint;
-
-	private Cloud cloud;
+	HashSet<Cloud>		clouds;
+	SpriteFactory		spriteFactory;
 
 
 	@Override
 	public void create() {
 		Gdx.input.setInputProcessor(this);
 		batch = new SpriteBatch();
-		backgroundImage = new Texture(Gdx.files.internal("background_placeholder.png"));
 		shark = Shark.getInstance();
+		backgroundImage = new Texture(Gdx.files.internal("background_placeholder.png"));
 		sharkImage = new Texture(Gdx.files.internal("shark_placeholder.png"));
 		sharkHopSound = Gdx.audio.newSound(Gdx.files.internal("explosion sound effect.mp3"));
 
-		cloud = new Cloud();
-
+		clouds = new HashSet<Cloud>();
+		clouds.add(new Cloud());
 
 		gameEnv = GameEnv.getInstance();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
 		camera.update();
 		touchPoint = new Vector3();
+		spriteFactory = SpriteFactory.getInstance();
 	}
 
 	@Override
@@ -52,11 +56,18 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		batch.draw(backgroundImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		float dt = Gdx.graphics.getDeltaTime();
 		shark.update(dt);
-		cloud.update(dt);
+		spriteFactory.update(dt);
+		spriteFactory.createCloud(clouds);
+		HashSet<Cloud> toRemove = new HashSet<Cloud>();
+		for (Cloud cloud : clouds) {
+			if (cloud.getX() < -200f)
+				toRemove.add(cloud);
+			cloud.update(dt);
+			batch.draw(cloud.getTexture(), cloud.getX(), cloud.getY(), cloud.getWidth(), cloud.getHeight());
+		}
+		clouds.removeAll(toRemove);
+		System.out.println("Liczba chmurek = " + clouds.size());
 		batch.draw(sharkImage, shark.getX(), shark.getY(), shark.width(), shark.height());
-
-
-		batch.draw(cloud.getTexture(), cloud.getX(), cloud.getY(), cloud.getWidth(), cloud.getHeight());
 		batch.end();
 	}
 

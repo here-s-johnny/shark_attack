@@ -9,17 +9,20 @@ import com.badlogic.gdx.graphics.Texture;
 public class Cloud extends Movable{
     private Texture texture;
 
-    public Cloud() {
+    public Cloud(float width, float height) {
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
 
-        this.x = screenWidth- 200;
-        this.y = screenHeight- 200;
+        this.x = screenWidth + 200;
+        this.y = screenHeight * .8f;
         this.vx = -300.0f;
-        this.width = screenWidth * .1f;
-        this.height = screenHeight * 0.1f;
+        this.width = width;
+        this.height = height;
 
         this.texture = new Texture(Gdx.files.internal("cloud_placeholder.png"));
+    }
+    public Cloud() {
+        this(Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .1f);
     }
 
     // constructor to place a cloud at specific place (very likely to be redundant)
