@@ -25,6 +25,7 @@ public class GameEnv {
     public float getSharkHeight() {
         return screenHeight * .2f;
     }
+
     public float getSharkWidth() {
         return screenHeight * .2f;
     }
