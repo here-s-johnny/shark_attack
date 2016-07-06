@@ -3,6 +3,7 @@ package com.sharklord;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,6 +29,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 	int touchCoordinateX, touchCoordinateY;
 	Vector3 touchPoint;
+	Sound sound;
 
 	@Override
 	public void create() {
@@ -48,6 +50,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
 		camera.update();
+		sound = Gdx.audio.newSound(Gdx.files.internal("explosion sound effect.mp3"));
 	}
 
 	@Override
@@ -70,6 +73,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		sound.play();
 		touchCoordinateX = screenX;
 		touchCoordinateY = screenY;
 		stateTime = 0f;
