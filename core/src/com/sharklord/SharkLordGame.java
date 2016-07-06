@@ -5,15 +5,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 
 public class SharkLordGame extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch			batch;
 	Texture				sharkImage;
 	Shark				shark;
 	Sound				sharkHopSound;
+	GameEnv				gameEnv;
+	OrthographicCamera	camera;
+	Vector3				touchPoint;
 
 	@Override
 	public void create() {
@@ -22,6 +27,11 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		shark = Shark.getInstance();
 		sharkImage = new Texture(Gdx.files.internal("shark_placeholder.png"));
 		sharkHopSound = Gdx.audio.newSound(Gdx.files.internal("explosion sound effect.mp3"));
+		gameEnv = GameEnv.getInstance();
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
+		camera.update();
+		touchPoint = new Vector3();
 	}
 
 	@Override
@@ -41,7 +51,11 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		shark.jump();
+		camera.unproject(touchPoint.set(screenX, screenY, 0));
+		if (touchPoint.y > gameEnv.getScreenMiddleY())
+			shark.jump();
+		else
+			shark.dive();
 		return true;
 	}
 	@Override
