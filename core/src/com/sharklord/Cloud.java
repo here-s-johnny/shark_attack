@@ -6,30 +6,24 @@ import com.badlogic.gdx.graphics.Texture;
 /**
  * Created by johnny on 06.07.16.
  */
-public class Cloud extends Movable{
+public class Cloud extends Movable {
     private Texture texture;
+    static final float defaultCloudVelocity = -300.0f;
+    public static float defaultY() { return Gdx.graphics.getHeight() * .75f; }
 
-    public Cloud(float width, float height) {
+    public Cloud(float width, float height, float velocity, float y) {
         int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
 
         this.x = screenWidth + 200;
-        this.y = screenHeight * .8f;
-        this.vx = -300.0f;
+        this.y = y;
+        this.vx = velocity;
         this.width = width;
         this.height = height;
 
         this.texture = new Texture(Gdx.files.internal("cloud_placeholder.png"));
     }
     public Cloud() {
-        this(Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .1f);
-    }
-
-    // constructor to place a cloud at specific place (very likely to be redundant)
-    public Cloud(float x, float y, float vx, float vy) {
-        this.vx = vx;
-        this.vy = vy;
-        this.texture = new Texture(Gdx.files.internal("cloud_placeholder.png"));
+        this(Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .1f, defaultCloudVelocity, defaultY());
     }
 
     public Texture getTexture() {

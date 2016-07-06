@@ -21,12 +21,12 @@ public class SpriteFactory {
         cloudInterval = random.nextFloat() * maxCloudInterval  + minCloudInterval;
     }
 
-    final float maxCloudInterval = 1.5f;
-    final float minCloudInterval = 0.1f;
-    final float minCloudScalar = 0.1f;
-    final float maxCloudScalar = 1.3f;
-    final float defaultCloudWidth = Gdx.graphics.getWidth() * .1f;
-    final float defaultCloudHeight = Gdx.graphics.getHeight() * .1f;
+    static final float maxCloudInterval = 2.5f;
+    static final float minCloudInterval = 1.0f;
+    static final float minCloudScalar = 0.1f;
+    static final float maxCloudScalar = 1.3f;
+    static final float defaultCloudWidth = Gdx.graphics.getWidth() * .1f;
+    static final float defaultCloudHeight = Gdx.graphics.getHeight() * .1f;
     float cloudTime;
     float cloudInterval;
     Random random;
@@ -39,7 +39,16 @@ public class SpriteFactory {
         if (cloudTime > cloudInterval) {
             cloudTime = .0f;
             float scalar = random.nextFloat() * maxCloudScalar + minCloudScalar;
-            clouds.add(new Cloud(scalar * defaultCloudWidth, scalar * defaultCloudHeight));
+            float velocity = -1f * scalar * defaultCloudWidth;
+            float descent = 30f * scalar;
+            clouds.add(
+                    new Cloud(
+                            scalar * defaultCloudWidth,
+                            scalar * defaultCloudHeight,
+                            velocity,
+                            Cloud.defaultY() + descent
+                        )
+                    );
             cloudInterval = random.nextFloat() * maxCloudInterval + minCloudInterval;
         }
     }
