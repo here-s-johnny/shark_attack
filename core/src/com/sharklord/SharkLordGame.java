@@ -3,18 +3,18 @@ package com.sharklord;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
-
-
 
 public class SharkLordGame extends ApplicationAdapter implements InputProcessor {
+	Texture				sharkImage;
+	Shark				shark;
+
+	private void drawShark() {
+
+	}
 
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
@@ -24,23 +24,27 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	@Override
 	public void create() {
 		Gdx.input.setInputProcessor(this);
+		batch = new SpriteBatch();
+		shark = Shark.getInstance();
+		sharkImage = new Texture(Gdx.files.internal("shark_placeholder.png"));
+
 		cloud = new Cloud(10,10,10);
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
-		batch = new SpriteBatch();
 
 	}
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.begin();
+		float dt = Gdx.graphics.getDeltaTime();
+		shark.update(dt);
+		batch.draw(sharkImage, shark.getX(), shark.getY(), shark.width(), shark.height());
 
-		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
-		batch.begin();
 		batch.draw(cloud.getTexture(), cloud.getX(), cloud.getY());
 		batch.end();
 
@@ -54,7 +58,8 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
+		shark.jump();
+		return true;
 	}
 	@Override
 	public boolean keyDown(int keycode) {
