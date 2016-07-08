@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
  * Created by johnny on 06.07.16.
  */
 public class Cloud extends Movable {
-    private Texture texture;
     static final float defaultCloudVelocity = -300.0f;
     public static float defaultY() { return Gdx.graphics.getHeight() * .75f; }
 
@@ -26,8 +25,5 @@ public class Cloud extends Movable {
         this(Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .1f, defaultCloudVelocity, defaultY());
     }
 
-    public Texture getTexture() {
-        return this.texture;
-    }
 
 }

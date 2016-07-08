@@ -1,5 +1,7 @@
 package com.sharklord;
 
+import com.badlogic.gdx.graphics.Texture;
+
 /**
  * Represents all of the objects that move on / through the screen
  */
@@ -11,6 +13,7 @@ public class Movable {
     protected float ax;       /// Acceleration
     protected float ay;
 
+    protected Texture texture;
     protected float width;
     protected float height;
 
@@ -79,6 +82,9 @@ public class Movable {
         this.height = height;
     }
 
+    public Texture getTexture() {
+        return this.texture;
+    }
     public void update(float dt) {
         x += dt * vx;
         vy += dt * ax;

@@ -25,6 +25,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	OrthographicCamera	camera;
 	Vector3				touchPoint;
 	HashSet<Cloud>		clouds;
+	HashSet<Edible>		floaters;
 	SpriteFactory		spriteFactory;
 
 
@@ -32,19 +33,30 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	public void create() {
 		Gdx.input.setInputProcessor(this);
 		batch = new SpriteBatch();
+
+		// initializing shark
 		shark = Shark.getInstance();
 		backgroundImage = new Texture(Gdx.files.internal("background_placeholder.png"));
-		sharkImage = new Texture(Gdx.files.internal("shark_placeholder.png"));
+		sharkImage = new Texture(Gdx.files.internal("grey_shark_placeholder.png"));
+		//explosion backdoor :D
 		sharkHopSound = Gdx.audio.newSound(Gdx.files.internal("explosion sound effect.mp3"));
 
+		// initializing sets of sprites
 		clouds = new HashSet<Cloud>();
-		clouds.add(new Cloud());
+		floaters = new HashSet<Edible>();
 
+		// initializing game environment class (for shark info)
 		gameEnv = GameEnv.getInstance();
+
+		// initializng camera settings
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0f);
 		camera.update();
+
+		// initializing touchDown event
 		touchPoint = new Vector3();
+
+		// initializing sprite factory
 		spriteFactory = SpriteFactory.getInstance();
 	}
 
@@ -58,15 +70,27 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		shark.update(dt);
 		spriteFactory.update(dt);
 		spriteFactory.createCloud(clouds);
-		HashSet<Cloud> toRemove = new HashSet<Cloud>();
+		spriteFactory.createFloater(floaters);
+		HashSet<Movable> toRemove = new HashSet<Movable>();
 		for (Cloud cloud : clouds) {
 			if (cloud.getX() < -200f)
 				toRemove.add(cloud);
 			cloud.update(dt);
 			batch.draw(cloud.getTexture(), cloud.getX(), cloud.getY(), cloud.getWidth(), cloud.getHeight());
 		}
+		for (Edible floater : floaters) {
+			if (floater.getX() < -200f)
+				toRemove.add(floater);
+			floater.update(dt);
+			batch.draw(floater.getTexture(), floater.getX(), floater.getY(), floater.getWidth(), floater.getHeight());
+		}
+
+		// cleaning up
 		clouds.removeAll(toRemove);
+		floaters.removeAll(toRemove);
+
 		System.out.println("Liczba chmurek = " + clouds.size());
+		System.out.println("Liczba floatersow = "  + floaters.size());
 		batch.draw(sharkImage, shark.getX(), shark.getY(), shark.width(), shark.height());
 		batch.end();
 	}
