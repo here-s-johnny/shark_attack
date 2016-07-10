@@ -15,11 +15,14 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.HashSet;
 import java.util.Set;
 
+import aurelienribon.bodyeditor.BodyEditorLoader;
+
 public class SharkLordGame extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch			batch;
 	Texture				backgroundImage;
 	OrthographicCamera	camera;
 	Vector3				touchPoint;
+	BodyEditorLoader	x;
 
 
 	@Override
