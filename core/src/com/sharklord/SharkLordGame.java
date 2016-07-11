@@ -31,8 +31,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	OrthographicCamera		camera;
 	ExtendViewport			viewport;
 	Vector3					touchPoint;
-	Body					shark;
-	Vector2					sharkOrigin;
+	Shark					shark;
 	Body					ground;
 
 	@Override
@@ -40,8 +39,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		Gdx.input.setInputProcessor(this);
 
 		Box2D.init();
-		world = new World(new Vector2(0, -50), true);
-
+		world = new World(new Vector2(0, 0), true);
 		debugRenderer = new Box2DDebugRenderer();
 
 		batch = new SpriteBatch();
@@ -55,16 +53,19 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		SpriteHandler.setBatch(batch);
 		SpriteHandler.initializeSprites();
 
-		sharkOrigin = new Vector2();
-		shark = WorldHandler.createDynamicBody(
+		Mechanics.update(viewport.getMinWorldWidth(), viewport.getMinWorldHeight());
+
+		Vector2 sharkOrigin = new Vector2();
+		Body sharkBody = WorldHandler.createDynamicBody(
 				Gdx.files.internal("data/shark.json"),
 				"shark",
-				40,
-				20,
+				.13f * viewport.getMinWorldWidth(),
+				Mechanics.getMiddleLevel(),
 				0f,
 				SpriteHandler.getSprite("shark").getWidth(),
 				sharkOrigin
 			);
+		shark = new Shark(sharkBody, sharkOrigin);
 	}
 
 	@Override
@@ -74,10 +75,10 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		WorldHandler.step();
+		shark.controlBounds();
 
 		batch.begin();
-		Vector2 sharkPos = shark.getPosition();
-		SpriteHandler.drawSprite("shark", sharkPos.x, sharkPos.y, (float) Math.toDegrees(shark.getAngle()), sharkOrigin);
+		shark.draw();
 		batch.end();
 
 		debugRenderer.render(world, camera.combined);
@@ -94,14 +95,21 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		batch.setProjectionMatrix(camera.combined);
 
 		WorldHandler.createGround(ground);
+
+		Mechanics.update(viewport.getMinWorldWidth(), viewport.getMinWorldHeight());
 	}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		camera.unproject(touchPoint.set(screenX, screenY, 0));
-		Vector2 sharkVel = shark.getLinearVelocity();
-		sharkVel.y += 30f;
-		shark.setLinearVelocity(sharkVel);
+		if (touchPoint.y < viewport.getWorldHeight() / 2f) {
+			System.out.println("Klik poniżej połowy");
+			shark.clickDown();
+		} else {
+			System.out.println("Klik powyżej połowy");
+			shark.clickUp();
+		}
+		System.out.println("Klik " + shark.getState());
 		return true;
 	}
 	@Override

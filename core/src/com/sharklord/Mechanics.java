@@ -11,11 +11,14 @@ public abstract class Mechanics {
 	private static float topLevel;
 	private static float waterLevel;
 
+	private static float sharkUnderwaterVelocity;
+
 	public static void update(float viewportWidth, float viewportHeight) {
 		lowerLevel = viewportHeight * Const.lowerLevelRatio;
 		middleLevel = viewportHeight * Const.middleLevelRatio;
 		topLevel = viewportHeight * Const.topLevelRatio;
 		waterLevel = viewportHeight * Const.waterLevelRatio;
+		sharkUnderwaterVelocity = viewportHeight * 1.1f;
 	}
 
 	public static float getLowerLevel() {
@@ -33,5 +36,10 @@ public abstract class Mechanics {
 	public static float getWaterLevel() {
 		return waterLevel;
 	}
+
+	public static float getSharkUnderwaterVelocity() {
+		return sharkUnderwaterVelocity;
+	}
+
 
 }

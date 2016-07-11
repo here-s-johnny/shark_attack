@@ -42,6 +42,17 @@ public abstract class WorldHandler {
         }
     }
 
+	/**
+	 * Creates a dynamic Box2D Body, based on the parameters
+	 * @param jsonFile JsonFile generated in Physics Body Editor for this body
+	 * @param name name of the body (it's set in Physics Body Editor, default is "name")
+	 * @param x the x coordinate of the body
+	 * @param y the y coordinate of the body
+	 * @param rotation the rotation of the body
+	 * @param scale the width of the body
+	 * @param origin a reference to an initialized Vector2 object where the origin
+	 *               of the body will be stored
+	 */
     public static Body createDynamicBody(FileHandle jsonFile,
 										 String name,
 										 float x,
