@@ -34,4 +34,8 @@ public abstract class SpriteHandler {
         sprite.setPosition(x, y);
         sprite.draw(batch);
     }
+
+    public static Sprite getSprite(String name) {
+        return sprites.get(name);
+    }
 }

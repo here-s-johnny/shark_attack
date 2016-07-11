@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
@@ -25,11 +26,13 @@ import java.util.Set;
 
 public class SharkLordGame extends ApplicationAdapter implements InputProcessor {
 	World					world;
+	Box2DDebugRenderer		debugRenderer;
 	SpriteBatch				batch;
 	OrthographicCamera		camera;
 	ExtendViewport			viewport;
 	Vector3					touchPoint;
 	Body					shark;
+	Body					ground;
 
 	@Override
 	public void create() {
@@ -37,13 +40,15 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 		Box2D.init();
 		world = new World(new Vector2(0, -10), true);
-		WorldHandler.setWorld(world);
+
+		debugRenderer = new Box2DDebugRenderer();
 
 		batch = new SpriteBatch();
 
 		camera = new OrthographicCamera();
 		viewport = new ExtendViewport(80, 60, camera);
-
+		WorldHandler.setWorld(world);
+		WorldHandler.setCamera(camera);
 		touchPoint = new Vector3();
 
 		SpriteHandler.setBatch(batch);
@@ -52,14 +57,17 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		shark = WorldHandler.createDynamicBody(
 				Gdx.files.internal("data/shark.json"),
 				"shark",
-				20,
-				20
+				40,
+				100,
+				0f,
+				SpriteHandler.getSprite("shark").getWidth()
 			);
 	}
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0.57f, 0.77f, 0.85f, 1);
+	//	Gdx.gl.glClearColor(0.57f, 0.77f, 0.85f, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		WorldHandler.step();
@@ -68,6 +76,8 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		Vector2 sharkPos = shark.getPosition();
 		SpriteHandler.drawSprite("shark", sharkPos.x, sharkPos.y);
 		batch.end();
+
+		debugRenderer.render(world, camera.combined);
 	}
 
 	@Override
@@ -79,6 +89,8 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	public void resize(int width, int height) {
 		viewport.update(width, height, true);
 		batch.setProjectionMatrix(camera.combined);
+
+		WorldHandler.createGround(ground);
 	}
 
 	@Override

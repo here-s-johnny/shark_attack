@@ -83,6 +83,7 @@ public class BodyEditorLoader {
 		if (rbModel == null) throw new RuntimeException("Name '" + name + "' was not found.");
 
 		Vector2 origin = vec.set(rbModel.origin).scl(scale);
+		System.out.println();
 
 		for (int i=0, n=rbModel.polygons.size; i<n; i++) {
 			PolygonModel polygon = rbModel.polygons.get(i);
