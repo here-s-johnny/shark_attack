@@ -10,5 +10,9 @@ public class Const {
     public static final int POSITION_ITERATIONS = 4;
 
     /** Graphics-related constants */
-    public static final float SCALE = .05f;
+    public static final float SCALE = .04f;
+    public static final float lowerLevelRatio = 1f / 5f;
+    public static final float middleLevelRatio = 1f / 2f;
+    public static final float topLevelRatio = 4f / 5f;
+    public static final float waterLevelRatio = 7f / 10f;
 }

@@ -3,6 +3,7 @@ package com.sharklord;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -41,7 +42,13 @@ public abstract class WorldHandler {
         }
     }
 
-    public static Body createDynamicBody(FileHandle jsonFile, String name, float x, float y, float rotation, float scale) {
+    public static Body createDynamicBody(FileHandle jsonFile,
+										 String name,
+										 float x,
+										 float y,
+										 float rotation,
+										 float scale,
+										 Vector2 origin) {
         if (world == null)
             throw new NullPointerException();
         BodyEditorLoader loader = new BodyEditorLoader(jsonFile);
@@ -54,18 +61,20 @@ public abstract class WorldHandler {
         fd.density = 1f;
         fd.friction = .5f;
         fd.restitution = .3f;
-		//fd.shape = shape;
 
         Body ret = world.createBody(bd);
 
         loader.attachFixture(ret, name, fd, scale);
 
 		ret.setTransform(x, y, rotation);
+
+		origin.set(loader.getOrigin(name, scale).cpy());
+
         return ret;
     }
 
-    public static Body createDynamicBody(FileHandle jsonFile, String name, float x, float y, float rotation) {
-        return createDynamicBody(jsonFile, name, x, y, rotation, 40);
+    public static Body createDynamicBody(FileHandle jsonFile, String name, float x, float y, float rotation, Vector2 origin) {
+        return createDynamicBody(jsonFile, name, x, y, rotation, 40, origin);
     }
 
     public static void createGround(Body ground) {

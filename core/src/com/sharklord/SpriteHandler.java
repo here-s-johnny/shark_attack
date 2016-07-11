@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 
@@ -27,12 +28,14 @@ public abstract class SpriteHandler {
         sprites.put("shark", shark);
     }
 
-    public static void drawSprite(String name, float x, float y, float rotation) {
+    public static void drawSprite(String name, float x, float y, float rotation, Vector2 origin) {
         Sprite sprite = sprites.get(name);
         if (sprite == null)
             return;
-        sprite.setPosition(x, y);
+        sprite.setPosition(x - origin.x, y - origin.y);
+		sprite.setOrigin(origin.x, origin.y);
         sprite.setRotation(rotation);
+		System.out.println("origin = " + sprite.getOriginX() + " " + sprite.getOriginY());
         sprite.draw(batch);
     }
 

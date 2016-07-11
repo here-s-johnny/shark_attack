@@ -32,6 +32,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	ExtendViewport			viewport;
 	Vector3					touchPoint;
 	Body					shark;
+	Vector2					sharkOrigin;
 	Body					ground;
 
 	@Override
@@ -39,7 +40,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		Gdx.input.setInputProcessor(this);
 
 		Box2D.init();
-		world = new World(new Vector2(0, -10), true);
+		world = new World(new Vector2(0, -50), true);
 
 		debugRenderer = new Box2DDebugRenderer();
 
@@ -54,13 +55,15 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		SpriteHandler.setBatch(batch);
 		SpriteHandler.initializeSprites();
 
+		sharkOrigin = new Vector2();
 		shark = WorldHandler.createDynamicBody(
 				Gdx.files.internal("data/shark.json"),
 				"shark",
 				40,
-				100,
+				20,
 				0f,
-				SpriteHandler.getSprite("shark").getWidth()
+				SpriteHandler.getSprite("shark").getWidth(),
+				sharkOrigin
 			);
 	}
 
@@ -74,7 +77,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 		batch.begin();
 		Vector2 sharkPos = shark.getPosition();
-		SpriteHandler.drawSprite("shark", sharkPos.x, sharkPos.y, (float) Math.toDegrees(shark.getAngle()));
+		SpriteHandler.drawSprite("shark", sharkPos.x, sharkPos.y, (float) Math.toDegrees(shark.getAngle()), sharkOrigin);
 		batch.end();
 
 		debugRenderer.render(world, camera.combined);
@@ -96,6 +99,9 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		camera.unproject(touchPoint.set(screenX, screenY, 0));
+		Vector2 sharkVel = shark.getLinearVelocity();
+		sharkVel.y += 30f;
+		shark.setLinearVelocity(sharkVel);
 		return true;
 	}
 	@Override
