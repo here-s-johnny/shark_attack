@@ -27,11 +27,12 @@ public abstract class SpriteHandler {
         sprites.put("shark", shark);
     }
 
-    public static void drawSprite(String name, float x, float y) {
+    public static void drawSprite(String name, float x, float y, float rotation) {
         Sprite sprite = sprites.get(name);
         if (sprite == null)
             return;
         sprite.setPosition(x, y);
+        sprite.setRotation(rotation);
         sprite.draw(batch);
     }
 

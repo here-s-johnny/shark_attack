@@ -74,7 +74,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 		batch.begin();
 		Vector2 sharkPos = shark.getPosition();
-		SpriteHandler.drawSprite("shark", sharkPos.x, sharkPos.y);
+		SpriteHandler.drawSprite("shark", sharkPos.x, sharkPos.y, (float) Math.toDegrees(shark.getAngle()));
 		batch.end();
 
 		debugRenderer.render(world, camera.combined);
