@@ -1,8 +1,10 @@
 package com.sharklord;
 
 /**
- * Represents each possible state of The Shark
+ * Represents possible states of The Shark
  */
 public enum SharkState {
-    Ascending, Descending, Neutral
+	lowerLevel,
+	middleLevel,
+	jumping
 }

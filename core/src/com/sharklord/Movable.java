@@ -1,88 +1,30 @@
 package com.sharklord;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+
 /**
- * Represents all of the objects that move on / through the screen
+ * Body and Sprite wrapper
  */
 public class Movable {
-    protected float x;        /// Position
-    protected float y;
-    protected float vx;       /// Velocity
-    protected float vy;
-    protected float ax;       /// Acceleration
-    protected float ay;
+	protected String		name;
+	protected Body			body;
+	protected Vector2		origin;
 
-    protected float width;
-    protected float height;
+	public Movable(String n, Body b, Vector2 o) {
+		name = n;
+		body = b;
+		origin = o;
+	}
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getVx() {
-        return vx;
-    }
-
-    public float getVy() {
-        return vy;
-    }
-
-    public float getAx() {
-        return ax;
-    }
-
-    public float getAy() {
-        return ay;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public void setVx(float vx) {
-        this.vx = vx;
-    }
-
-    public void setVy(float vy) {
-        this.vy = vy;
-    }
-
-    public void setAx(float ax) {
-        this.ax = ax;
-    }
-
-    public void setAy(float ay)
-    {
-        this.ay = ay;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public void update(float dt) {
-        x += dt * vx;
-        vy += dt * ax;
-        y += dt * vy;
-        vy += dt * ay;
-    }
+	public void draw() {
+		SpriteHandler.drawSprite(
+				name,
+				body.getPosition().x,
+				body.getPosition().y,
+				(float) Math.toDegrees(body.getAngle()),
+				origin
+			);
+	}
 }
