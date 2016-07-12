@@ -21,4 +21,7 @@ public class Const {
 
     public static final float jumpGravity = -170f;
     public static final float jumpVelocity = 85f;
+
+    /** Resource-related constants */
+	public static final String jsonBodies = "data/bodies.json";
 }

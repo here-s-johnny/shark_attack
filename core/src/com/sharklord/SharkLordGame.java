@@ -57,7 +57,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 
 		Vector2 sharkOrigin = new Vector2();
 		Body sharkBody = WorldHandler.createDynamicBody(
-				Gdx.files.internal("data/shark.json"),
+				Gdx.files.internal(Const.jsonBodies),
 				"shark",
 				.13f * viewport.getMinWorldWidth(),
 				Mechanics.getMiddleLevel(),
@@ -103,10 +103,8 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		camera.unproject(touchPoint.set(screenX, screenY, 0));
 		if (touchPoint.y < viewport.getWorldHeight() / 2f) {
-			System.out.println("Klik poniżej połowy");
 			shark.clickDown();
 		} else {
-			System.out.println("Klik powyżej połowy");
 			shark.clickUp();
 		}
 		System.out.println("Klik " + shark.getState());
