@@ -12,7 +12,7 @@ public class Shark extends Movable {
 	private SharkState state;
 	public Shark(Body b, Vector2 o) {
 		super("shark", b, o);
-		state = SharkState.lowerLevel;
+		state = SharkState.middleLevel;
 	}
 
 	private void jump() {
@@ -24,6 +24,7 @@ public class Shark extends Movable {
 		if (state == SharkState.middleLevel) {
 			jump();
 		} else if (state == SharkState.lowerLevel) {
+			setState(SharkState.goingUp);
 			body.setLinearVelocity(0f, Mechanics.getSharkUnderwaterVelocity());
 		}
 	}
@@ -31,21 +32,22 @@ public class Shark extends Movable {
 	public void clickDown() {
 		if (state == SharkState.middleLevel) {
 			body.setLinearVelocity(0f, -Mechanics.getSharkUnderwaterVelocity());
+			setState(SharkState.goingDown);
 		}
 	}
 
 	public void controlBounds() {
-		if (state == SharkState.middleLevel && body.getPosition().y <= Mechanics.getLowerLevel()) {
+		if (state == SharkState.goingDown && body.getPosition().y <= Mechanics.getLowerLevel()) {
 			body.setLinearVelocity(0f, 0f);
 			setState(SharkState.lowerLevel);
 		}
-		if (state == SharkState.lowerLevel && body.getPosition().y >= Mechanics.getMiddleLevel()) {
+		if (state == SharkState.goingUp && body.getPosition().y >= Mechanics.getMiddleLevel()) {
 			body.setLinearVelocity(0f, 0f);
 			setState(SharkState.middleLevel);
 		}
 		if (state == SharkState.jumping) {
 			if (body.getPosition().y <= Mechanics.getMiddleLevel()) {
-				state = SharkState.middleLevel;
+				setState(SharkState.middleLevel);
 				body.setLinearVelocity(0f, 0f);
 			} else {
 				Vector2 gravity = new Vector2(0f, Const.jumpGravity * body.getMass());

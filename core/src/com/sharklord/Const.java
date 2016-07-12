@@ -20,5 +20,5 @@ public class Const {
     public static final float WorldMinHeight = 60f;
 
     public static final float jumpGravity = -170f;
-    public static final float jumpVelocity = 100f;
+    public static final float jumpVelocity = 85f;
 }

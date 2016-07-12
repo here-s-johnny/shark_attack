@@ -6,5 +6,7 @@ package com.sharklord;
 public enum SharkState {
 	lowerLevel,
 	middleLevel,
-	jumping
+	jumping,
+	goingDown,
+	goingUp
 }
