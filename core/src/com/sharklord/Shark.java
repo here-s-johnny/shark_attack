@@ -15,9 +15,14 @@ public class Shark extends Movable {
 		state = SharkState.lowerLevel;
 	}
 
+	private void jump() {
+		state = SharkState.jumping;
+		body.setLinearVelocity(0f, Const.jumpVelocity);
+	}
+
 	public void clickUp() {
 		if (state == SharkState.middleLevel) {
-			// @TODO skok wzwyż
+			jump();
 		} else if (state == SharkState.lowerLevel) {
 			body.setLinearVelocity(0f, Mechanics.getSharkUnderwaterVelocity());
 		}
@@ -38,6 +43,16 @@ public class Shark extends Movable {
 			body.setLinearVelocity(0f, 0f);
 			setState(SharkState.middleLevel);
 		}
+		if (state == SharkState.jumping) {
+			if (body.getPosition().y <= Mechanics.getMiddleLevel()) {
+				state = SharkState.middleLevel;
+				body.setLinearVelocity(0f, 0f);
+			} else {
+				Vector2 gravity = new Vector2(0f, Const.jumpGravity * body.getMass());
+				body.applyForce(gravity, body.getWorldCenter(), false);
+			}
+		}
+
 	}
 
 	public SharkState getState() {

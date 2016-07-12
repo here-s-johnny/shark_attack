@@ -15,4 +15,10 @@ public class Const {
     public static final float middleLevelRatio = 1f / 2f;
     public static final float topLevelRatio = 4f / 5f;
     public static final float waterLevelRatio = 7f / 10f;
+
+    public static final float WorldMinWidth = 60f;
+    public static final float WorldMinHeight = 60f;
+
+    public static final float jumpGravity = -170f;
+    public static final float jumpVelocity = 100f;
 }

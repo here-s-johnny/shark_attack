@@ -45,7 +45,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		batch = new SpriteBatch();
 
 		camera = new OrthographicCamera();
-		viewport = new ExtendViewport(80, 60, camera);
+		viewport = new ExtendViewport(Const.WorldMinWidth, Const.WorldMinHeight, camera);
 		WorldHandler.setWorld(world);
 		WorldHandler.setCamera(camera);
 		touchPoint = new Vector3();
