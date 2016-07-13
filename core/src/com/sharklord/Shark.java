@@ -1,67 +1,51 @@
 package com.sharklord;
 
-import javax.swing.text.Position;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 /**
- * Created by filip on 06.07.16.
- * Shark singleton
+ * Represents The Shark. Not a singleton,
+ * since there might come a multiplayer version
  */
 public class Shark extends Movable {
-    private static Shark ourInstance = null;
+	private SharkState state;
+	public Shark(Body b, Vector2 o) {
+		super("shark", b, o);
+		state = SharkState.lowerLevel;
+	}
 
-    private static GameEnv gameEnv = null;
+	public void clickUp() {
+		if (state == SharkState.middleLevel) {
+			// @TODO skok wzwyż
+		} else if (state == SharkState.lowerLevel) {
+			body.setLinearVelocity(0f, Mechanics.getSharkUnderwaterVelocity());
+		}
+	}
 
-    private SharkState state;
+	public void clickDown() {
+		if (state == SharkState.middleLevel) {
+			body.setLinearVelocity(0f, -Mechanics.getSharkUnderwaterVelocity());
+		}
+	}
 
-    public static Shark getInstance() {
-        if (ourInstance == null) {
-            if (gameEnv == null) {
-            }
-            ourInstance = new Shark(GameEnv.getInstance());
-        }
-        return ourInstance;
-    }
+	public void controlBounds() {
+		if (state == SharkState.middleLevel && body.getPosition().y <= Mechanics.getLowerLevel()) {
+			body.setLinearVelocity(0f, 0f);
+			setState(SharkState.lowerLevel);
+		}
+		if (state == SharkState.lowerLevel && body.getPosition().y >= Mechanics.getMiddleLevel()) {
+			body.setLinearVelocity(0f, 0f);
+			setState(SharkState.middleLevel);
+		}
+	}
 
-    private Shark(GameEnv gEnv) {
-        gameEnv = gEnv;
-        x = gameEnv.getSharkInitX();
-        y = gameEnv.getSharkInitY();
-        vx = gameEnv.getSharkInitVx();
-        vy = gameEnv.getSharkInitVy();
-        ax = gameEnv.getSharkInitAx();
-        ay = gameEnv.getSharkInitAy();
-        state = SharkState.Neutral;
-    }
+	public SharkState getState() {
+		return state;
+	}
 
-    public float height() { return gameEnv.getSharkHeight(); }
-    public float width() { return gameEnv.getSharkWidth(); }
+	public void setState(SharkState state) {
+		this.state = state;
+	}
 
-    public void jump() {
-        if (state == SharkState.Neutral) {
-            state = SharkState.Ascending;
-            System.out.println("Kto nie skacze, ten z policji!");
-            ay = -3500.0f;
-            vy = 1000.0f;
-        }
-    }
-
-    public void dive() {
-        if (state == SharkState.Neutral) {
-            state = SharkState.Descending;
-            System.out.println("Le big bleu");
-            ay = 3500.0f;
-            vy = -1000.0f;
-        }
-    }
-
-    public void update(float dt) {
-        super.update(dt);
-        if ((state == SharkState.Ascending && y < gameEnv.getSharkInitY()) ||
-                (state == SharkState.Descending && y > gameEnv.getSharkInitY())) {
-            y = gameEnv.getSharkInitY();
-            vy = .0f;
-            ay = .0f;
-            state = SharkState.Neutral;
-        }
-    }
 }
