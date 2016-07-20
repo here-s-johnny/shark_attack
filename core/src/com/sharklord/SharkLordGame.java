@@ -10,10 +10,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -32,6 +34,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 	ExtendViewport			viewport;
 	Vector3					touchPoint;
 	Shark					shark;
+	Edible					paraglider;
 	Body					ground;
 
 	@Override
@@ -66,18 +69,35 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 				sharkOrigin
 			);
 		shark = new Shark(sharkBody, sharkOrigin);
+
+
+		Vector2 gliderOrigin = new Vector2();
+		Body gliderBody = WorldHandler.createDynamicBody(
+				Gdx.files.internal("data/paraglider.json"),
+				"paraglider",
+				//ZNALEZC DOBRA X-owa WSPOLRZEDNA - TA NIE DZIALA
+				viewport.getMaxWorldWidth(),
+				Mechanics.getTopLevel(),
+				0f,
+				SpriteHandler.getSprite("paraglider").getWidth(),
+				gliderOrigin
+		);
+
+		paraglider = new Edible("paraglider", gliderBody, gliderOrigin);
+		paraglider.body.setLinearVelocity(-10f, 0f);
 	}
 
 	@Override
 	public void render() {
-	//	Gdx.gl.glClearColor(0.57f, 0.77f, 0.85f, 1);
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.57f, 0.77f, 0.85f, 1);
+//		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		WorldHandler.step();
 		shark.controlBounds();
 
 		batch.begin();
+		paraglider.draw();
 		shark.draw();
 		batch.end();
 

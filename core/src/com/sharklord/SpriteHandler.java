@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 
@@ -16,15 +18,39 @@ public abstract class SpriteHandler {
 
     private static HashMap<String, Sprite> sprites;
 
+    private static TextureAtlas textureAtlas;
+
     public static void setBatch(SpriteBatch b) { batch = b; }
+
+    /**
+     * Loads the sprites and caches them into {@link #sprites}.
+     */
+    private static void loadSprites() {
+        Array<TextureAtlas.AtlasRegion> regions = textureAtlas.getRegions();
+
+        for (TextureAtlas.AtlasRegion region : regions) {
+            Sprite sprite = textureAtlas.createSprite(region.name);
+
+            sprites.put(region.name, sprite);
+        }
+    }
 
     public static void initializeSprites() {
         sprites = new HashMap<String, Sprite>();
-        Sprite shark = new Sprite(new Texture(Gdx.files.internal("shark_placeholder.png")));
+        textureAtlas = new TextureAtlas(Gdx.files.internal("sprites.atlas"));
+        loadSprites();
+        Sprite shark = sprites.get("shark");
+        Sprite paraglider = sprites.get("paraglider");
+
         float width = shark.getWidth() * Const.SCALE;
         float height = shark.getHeight() * Const.SCALE;
         shark.setSize(width, height);
         shark.setOrigin(0, 0);
+
+
+        paraglider.setSize(paraglider.getWidth()*Const.SCALE, paraglider.getHeight()* Const.SCALE);
+        paraglider.setOrigin(0,0);
+        sprites.put("paraglider", paraglider);
         sprites.put("shark", shark);
     }
 
@@ -35,7 +61,7 @@ public abstract class SpriteHandler {
         sprite.setPosition(x - origin.x, y - origin.y);
 		sprite.setOrigin(origin.x, origin.y);
         sprite.setRotation(rotation);
-		System.out.println("origin = " + sprite.getOriginX() + " " + sprite.getOriginY());
+		System.out.println("name = " + name + "origin = " + sprite.getOriginX() + " " + sprite.getOriginY());
         sprite.draw(batch);
     }
 

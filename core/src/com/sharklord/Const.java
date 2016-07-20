@@ -15,4 +15,10 @@ public class Const {
     public static final float middleLevelRatio = 1f / 2f;
     public static final float topLevelRatio = 4f / 5f;
     public static final float waterLevelRatio = 7f / 10f;
+
+    /** Enumeration of collision states */
+
+    public enum CollisionState {
+        EDIBLE, OBSTACLE, NEUTRAL
+    }
 }

@@ -1,18 +1,16 @@
 package com.sharklord;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 /**
- * Created by johnny on 07.07.16.
+ * Created by johnny on 16.07.16.
  */
 public class Edible extends Movable {
-    public Edible(Texture texture, float y, float vx, float width, float height) {
-        this.texture = texture;
-        this.x = Gdx.graphics.getWidth() + 200;
-        this.y = y;
-        this.vx = vx;
-        this.width = width;
-        this.height = height;
+    protected Const.CollisionState collisionState;
+
+    public Edible(String name, Body b, Vector2 o) {
+        super(name, b, o);
+        collisionState = Const.CollisionState.EDIBLE;
     }
 }

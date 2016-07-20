@@ -29,7 +29,7 @@ public abstract class WorldHandler {
     public static void setCamera(OrthographicCamera c) { camera = c; }
 
 
-        public static void step() {
+    public static void step() {
         float dt = Gdx.graphics.getDeltaTime();
         accumulator += Math.min(dt, .25f);
         if (accumulator >= Const.STEP_TIME) {
