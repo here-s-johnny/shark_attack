@@ -1,0 +1,47 @@
+sprites.png
+size: 1650, 1650
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shark
+  rotate: false
+  xy: 0, 14
+  size: 418, 378
+  orig: 418, 378
+  offset: 0, 0
+  index: -1
+blueshark
+  rotate: false
+  xy: 440, 14
+  size: 418, 378
+  orig: 418, 378
+  offset: 0, 0
+  index: -1
+paraglider
+  rotate: false
+  xy: 950, 47
+  size: 241, 264
+  orig: 241, 264
+  offset: 0, 0
+  index: -1
+floater
+  rotate: false
+  xy: 452, 477
+  size: 230, 263
+  orig: 230, 263
+  offset: 0, 0
+  index: -1
+diver
+  rotate: false
+  xy: 752, 552
+  size: 253, 97
+  orig: 253, 97
+  offset: 0, 0
+  index: -1
+cloud
+  rotate: false
+  xy: 1239, 58
+  size: 162, 83
+  orig: 162, 83
+  offset: 0, 0
+  index: -1 

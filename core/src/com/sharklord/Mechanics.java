@@ -11,6 +11,9 @@ public abstract class Mechanics {
 	private static float topLevel;
 	private static float waterLevel;
 
+	private static float spawnX;
+	private static float removeMovableX;
+
 	private static float sharkUnderwaterVelocity;
 
 	public static void update(float viewportWidth, float viewportHeight) {
@@ -19,6 +22,8 @@ public abstract class Mechanics {
 		topLevel = viewportHeight * Const.topLevelRatio;
 		waterLevel = viewportHeight * Const.waterLevelRatio;
 		sharkUnderwaterVelocity = viewportHeight * 1.1f;
+		spawnX = viewportWidth * 2f;
+		removeMovableX = -viewportWidth;
 	}
 
 	public static float getLowerLevel() {
@@ -41,5 +46,11 @@ public abstract class Mechanics {
 		return sharkUnderwaterVelocity;
 	}
 
+	public static float getSpawnX() {
+		return spawnX;
+	}
 
+	public static float getRemoveMovableX() {
+		return removeMovableX;
+	}
 }

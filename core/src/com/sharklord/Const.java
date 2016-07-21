@@ -22,6 +22,14 @@ public class Const {
     public static final float jumpGravity = -170f;
     public static final float jumpVelocity = 85f;
 
+	public static final float sharkWidth = 18;
+	public static final float edibleWidth = 10;
+
     /** Resource-related constants */
 	public static final String jsonBodies = "data/bodies.json";
+    public static final String textureAtlas = "sprites.atlas";
+
+    /** Obstacle spawning time constants */
+    public static final float minSpawnTime = 1f;
+    public static final float maxSpawnTime = 3f;
 }

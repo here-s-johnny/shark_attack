@@ -62,7 +62,7 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 				.13f * viewport.getMinWorldWidth(),
 				Mechanics.getMiddleLevel(),
 				0f,
-				SpriteHandler.getSprite("shark").getWidth(),
+				Const.sharkWidth,
 				sharkOrigin
 			);
 		shark = new Shark(sharkBody, sharkOrigin);
@@ -74,12 +74,17 @@ public class SharkLordGame extends ApplicationAdapter implements InputProcessor 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		float dt = Gdx.graphics.getDeltaTime();
+
+		MovableFactory.update(dt);
 		WorldHandler.step();
 		shark.controlBounds();
 
+		/*
 		batch.begin();
 		shark.draw();
 		batch.end();
+		*/
 
 		debugRenderer.render(world, camera.combined);
 	}

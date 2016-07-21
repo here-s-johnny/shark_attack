@@ -16,6 +16,7 @@ public class Shark extends Movable {
 	}
 
 	private void jump() {
+		System.out.println("sharkattack: Shark should jump!");
 		state = SharkState.jumping;
 		body.setLinearVelocity(0f, Const.jumpVelocity);
 	}
